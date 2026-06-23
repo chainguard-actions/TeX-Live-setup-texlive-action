@@ -1,0 +1,26 @@
+{
+  "name": "@setup-texlive-action/logger",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "vitest"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./custom-inspect": "./src/custom-inspect.ts"
+  },
+  "sideEffects": [
+    "./src/custom-inspect.ts"
+  ],
+  "dependencies": {
+    "@actions/core": "^1.11.0",
+    "ansi-styles": "^6.2.1",
+    "clean-stack": "^5.2.0",
+    "ts-pattern": "^5.6.2"
+  },
+  "devDependencies": {
+    "@setup-texlive-action/polyfill": "*",
+    "@setup-texlive-action/utils": "*"
+  }
+}

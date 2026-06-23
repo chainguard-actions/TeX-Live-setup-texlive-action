@@ -1,0 +1,32 @@
+{
+  "name": "@setup-texlive-action/texlive",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "test": "vitest"
+  },
+  "main": "src/index.ts",
+  "type": "module",
+  "sideEffects": false,
+  "dependencies": {
+    "@actions/core": "^1.11.0",
+    "@actions/http-client": "^2.2.3",
+    "@actions/tool-cache": "^2.0.2",
+    "@teppeis/multimaps": "^3.0.0",
+    "class-transformer": "^0.5.1",
+    "deline": "^1.0.4",
+    "ts-mixer": "^6.0.4",
+    "ts-pattern": "^5.6.2",
+    "unctx": "^2.4.1",
+    "url-template": "^3.1.1"
+  },
+  "devDependencies": {
+    "@setup-texlive-action/data": "*",
+    "@setup-texlive-action/logger": "*",
+    "@setup-texlive-action/polyfill": "*",
+    "@setup-texlive-action/utils": "*",
+    "@types/deline": "^1.0.4",
+    "nock": "^13.5.5",
+    "texlive-json-schemas": "^0.2.0"
+  }
+}

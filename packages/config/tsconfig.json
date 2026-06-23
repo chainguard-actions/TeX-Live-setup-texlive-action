@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "@tsconfig/node20/tsconfig.json",
+    "@tsconfig/strictest/tsconfig.json",
+  ],
+  "compilerOptions": {
+    "noUnusedParameters": false,
+    "checkJs": false,
+    "resolveJsonModule": true,
+    "importHelpers": true,
+    "newLine": "lf",
+    "noEmitOnError": true,
+    "removeComments": true,
+    "stripInternal": true,
+    "allowSyntheticDefaultImports": false,
+    "esModuleInterop": false,
+    "verbatimModuleSyntax": true,
+    "experimentalDecorators": true,
+    "target": "esnext",
+  },
+}

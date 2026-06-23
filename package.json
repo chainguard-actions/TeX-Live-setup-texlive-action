@@ -1,0 +1,76 @@
+{
+  "name": "setup-texlive-action",
+  "private": true,
+  "version": "3.4.1",
+  "description": "A GitHub Action to set up TeX Live",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "changelog": "git cliff -c packages/config/cliff.toml -u -s all",
+    "check": "tsc -p packages/tsconfig.json --noEmit",
+    "dprint": "dprint -c packages/config/dprint/dprint.jsonc",
+    "e2e": "npm -w packages/e2e run e2e --",
+    "fmt": "npm run dprint fmt",
+    "fmt-check": "run-p --aggregate-output -c 'dprint check' fmt-check:ec",
+    "fmt-check:ec": "git ls-files -z | xargs -0 ec",
+    "licenses": "rspack -c packages/config/rspack/rspack.config.mjs",
+    "link-check": "markdown-link-check README.md",
+    "lint": "cd packages && eslint .",
+    "test": "cd packages && vitest",
+    "prepack": "run-p --aggregate-output -c build licenses",
+    "preversion": "npm run prepack",
+    "version": "bash scripts/bump-version.sh",
+    "postversion": "bash scripts/bump-version.sh"
+  },
+  "author": "@teatimeguest",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.mjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "action.yml",
+    "dist"
+  ],
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "semver": "^7.7.1"
+  },
+  "devDependencies": {
+    "@go-task/cli": "^3.39.2",
+    "@rspack/cli": "~1.1.8",
+    "@types/mock-fs": "^4.13.4",
+    "@types/node": "~20.16.15",
+    "@types/semver": "^7.5.8",
+    "better-typescript-lib": "^2.10.1",
+    "dprint": "^0.49.0",
+    "editorconfig-checker": "^6.0.0",
+    "esbuild": "^0.25.1",
+    "eslint": "^9.13.0",
+    "git-cliff": "^2.6.1",
+    "jest-extended": "^4.0.2",
+    "markdown-link-check": "^3.12.2",
+    "mock-fs": "^5.4.1",
+    "npm-run-all2": "^7.0.1",
+    "patch-package": "^8.0.0",
+    "taze": "^0.18.0",
+    "ts-dedent": "^2.2.0",
+    "ts-essentials": "^10.0.4",
+    "tsx": "^4.19.2",
+    "typescript": "5.6.*",
+    "vitest": "^2.1.2"
+  },
+  "overrides": {
+    "@rspack/core": "1.1.*",
+    "ajv-cli": {
+      "fast-json-patch": "^3.1.1"
+    },
+    "rimraf@<=3": "^6.0.1",
+    "semver": "$semver"
+  }
+}

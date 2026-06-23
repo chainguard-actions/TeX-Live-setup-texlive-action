@@ -1,0 +1,44 @@
+name: Test TeX Live setup with cache disabled
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: setup
+        uses: .
+        with:
+          version: '2023'
+          cache: 'false'
+          packages: 'scheme-infraonly'
+      - name: Assert cache-hit is false when cache disabled
+        env:
+          CACHE_HIT: ${{ steps.setup.outputs.cache-hit }}
+        run: |
+          echo "cache-hit: $CACHE_HIT"
+          if [ "$CACHE_HIT" = "true" ]; then
+            echo "FAIL: expected cache-hit to be false when cache is disabled"
+            exit 1
+          fi
+          echo "PASS: cache-hit=$CACHE_HIT"
+      - name: Assert cache-restored is false when cache disabled
+        env:
+          CACHE_RESTORED: ${{ steps.setup.outputs.cache-restored }}
+        run: |
+          echo "cache-restored: $CACHE_RESTORED"
+          if [ "$CACHE_RESTORED" = "true" ]; then
+            echo "FAIL: expected cache-restored to be false when cache is disabled"
+            exit 1
+          fi
+          echo "PASS: cache-restored=$CACHE_RESTORED"
+      - name: Assert version output is populated
+        env:
+          VERSION: ${{ steps.setup.outputs.version }}
+        run: |
+          echo "version: $VERSION"
+          if [ -z "$VERSION" ]; then
+            echo "FAIL: expected version output to be non-empty"
+            exit 1
+          fi
+          echo "PASS: version=$VERSION"

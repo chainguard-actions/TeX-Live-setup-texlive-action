@@ -1,0 +1,65 @@
+{
+  "$id": "tlpkg-patches.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Patches for `tlpkg`",
+  "type": "object",
+  "properties": {
+    "patches": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/patch"
+      }
+    }
+  },
+  "required": ["patches"],
+  "patternProperties": {
+    "^\\$.*$": {}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "patch": {
+      "type": "object",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "file": {
+              "type": "string",
+              "format": "uri-reference"
+            },
+            "changes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/change"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          },
+          "required": ["file", "changes"]
+        },
+        {
+          "$ref": "target.schema.json#"
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "change": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "string",
+          "format": "regex"
+        },
+        "to": {
+          "type": "string"
+        }
+      },
+      "required": ["from", "to"],
+      "additionalProperties": false
+    }
+  }
+}

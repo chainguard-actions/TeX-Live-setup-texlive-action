@@ -1,0 +1,18 @@
+{
+  "extends": "@setup-texlive-action/config/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "#action/*": [
+        "./action/src/*/index.ts",
+        "./action/src/*.ts",
+        "./action/src/*",
+      ],
+      "#texlive/*": [
+        "./texlive/src/*/index.ts",
+        "./texlive/src/*.ts",
+        "./texlive/src/*",
+      ],
+    },
+  },
+}
