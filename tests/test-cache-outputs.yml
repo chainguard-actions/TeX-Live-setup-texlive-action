@@ -1,0 +1,51 @@
+name: Test cache outputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      RUNNER_TEMP: /tmp/runner-temp
+      RUNNER_OS: Linux
+      RUNNER_TOOL_CACHE: /tmp/runner-tool-cache
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Prepare runner temp
+        run: mkdir -p /tmp/runner-temp /tmp/runner-tool-cache
+      - id: setup
+        uses: .
+        with:
+          version: '2024'
+          cache: 'false'
+          packages: 'scheme-infraonly'
+          prefix: '/tmp/texlive-test-cache'
+      - name: Assert cache-hit output is set
+        env:
+          CACHE_HIT: ${{ steps.setup.outputs.cache-hit }}
+        run: |
+          echo "cache-hit: $CACHE_HIT"
+          if [ -z "$CACHE_HIT" ]; then
+            echo "FAIL: cache-hit output is empty"
+            exit 1
+          fi
+          echo "PASS: cache-hit='$CACHE_HIT'"
+      - name: Assert cache-restored output is set
+        env:
+          CACHE_RESTORED: ${{ steps.setup.outputs.cache-restored }}
+        run: |
+          echo "cache-restored: $CACHE_RESTORED"
+          if [ -z "$CACHE_RESTORED" ]; then
+            echo "FAIL: cache-restored output is empty"
+            exit 1
+          fi
+          echo "PASS: cache-restored='$CACHE_RESTORED'"
+      - name: Assert cache-hit is false when cache disabled
+        env:
+          CACHE_HIT: ${{ steps.setup.outputs.cache-hit }}
+        run: |
+          echo "cache-hit: $CACHE_HIT"
+          if [ "$CACHE_HIT" = "true" ]; then
+            echo "FAIL: cache-hit should not be true when cache is disabled"
+            exit 1
+          fi
+          echo "PASS: cache-hit is not true as expected"

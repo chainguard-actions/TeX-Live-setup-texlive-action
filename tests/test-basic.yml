@@ -1,0 +1,48 @@
+name: Test basic TeX Live setup
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      RUNNER_TEMP: /tmp/runner-temp
+      RUNNER_OS: Linux
+      RUNNER_TOOL_CACHE: /tmp/runner-tool-cache
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Prepare runner temp
+        run: mkdir -p /tmp/runner-temp /tmp/runner-tool-cache
+      - id: setup
+        uses: .
+        with:
+          version: '2024'
+          cache: 'false'
+          packages: 'scheme-infraonly'
+          prefix: '/tmp/texlive-test-basic'
+      - name: Assert version output is set
+        env:
+          VERSION_OUT: ${{ steps.setup.outputs.version }}
+        run: |
+          echo "version output: $VERSION_OUT"
+          if [ -z "$VERSION_OUT" ]; then
+            echo "FAIL: version output is empty"
+            exit 1
+          fi
+          echo "PASS: version output is '$VERSION_OUT'"
+      - name: Assert version matches requested
+        env:
+          VERSION_OUT: ${{ steps.setup.outputs.version }}
+        run: |
+          echo "version output: $VERSION_OUT"
+          if [ "$VERSION_OUT" != "2024" ]; then
+            echo "FAIL: expected version '2024', got '$VERSION_OUT'"
+            exit 1
+          fi
+          echo "PASS"
+      - name: Assert tlmgr is available
+        run: |
+          if ! command -v tlmgr &>/dev/null; then
+            echo "FAIL: tlmgr not found in PATH"
+            exit 1
+          fi
+          echo "PASS: tlmgr found at $(command -v tlmgr)"

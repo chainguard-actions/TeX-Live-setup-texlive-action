@@ -1,0 +1,54 @@
+[changelog]
+header = ""
+body = """
+{{- version | default(value="Unreleased") }}
+
+{% if commit_id -%}
+  ### Full Commit SHA
+
+  ```sha1
+  {{ commit_id }}
+  ```
+
+{% endif -%}
+{% for commit in commits | filter(attribute="breaking", value=true) -%}
+  {% if loop.first -%}
+    ### Breaking Changes
+
+  {% endif -%}
+  - {{ commit.breaking_description }}
+  {% if loop.last %}
+  {% endif -%}
+{% endfor -%}
+{% for group, commits in commits | group_by(attribute="group") -%}
+  ### {{ group | striptags }}
+
+  {% for commit in commits -%}
+    - {{ commit.id }} \
+      {% if commit.scope != "" -%}
+        **({{ commit.scope }})** \
+      {%- endif -%}
+      {{ commit.message }}
+  {% endfor -%}
+  {% if not loop.last %}
+  {% endif -%}
+{% endfor %}
+"""
+footer = ""
+trim = true
+
+[git]
+conventional_commits = true
+commit_preprocessors = [
+  { pattern = "\\s*\\[skip ci\\]", replace = "" },
+]
+commit_parsers = [
+  { message = "^feat", group = "<1>Features", default_scope = "" },
+  { message = "^fix\\(unreleased\\)", skip = true },
+  { message = "^fix", group = "<2>Bug Fixes", default_scope = "" },
+  { message = "^perf", group = "<3>Performance Improvements", default_scope = "" },
+  { message = "^build\\(deps\\)", group = "<4>Dependency Updates", scope = "" },
+  { message = ".*", skip = true },
+]
+protect_breaking_commits = true
+tag_pattern = "v*.*.*"

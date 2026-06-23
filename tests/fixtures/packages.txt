@@ -1,0 +1,2 @@
+# TeX Live packages to install
+scheme-infraonly

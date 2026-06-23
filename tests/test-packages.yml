@@ -1,0 +1,45 @@
+name: Test package installation
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      RUNNER_TEMP: /tmp/runner-temp
+      RUNNER_OS: Linux
+      RUNNER_TOOL_CACHE: /tmp/runner-tool-cache
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Prepare runner temp
+        run: mkdir -p /tmp/runner-temp /tmp/runner-tool-cache
+      - id: setup
+        uses: .
+        with:
+          version: '2024'
+          cache: 'false'
+          packages: 'scheme-infraonly'
+          prefix: '/tmp/texlive-test-packages'
+      - name: Assert version output is set
+        env:
+          VERSION_OUT: ${{ steps.setup.outputs.version }}
+        run: |
+          echo "version: $VERSION_OUT"
+          if [ -z "$VERSION_OUT" ]; then
+            echo "FAIL: version output is empty"
+            exit 1
+          fi
+          echo "PASS"
+      - name: Assert tlmgr is available
+        run: |
+          if ! command -v tlmgr &>/dev/null; then
+            echo "FAIL: tlmgr not found in PATH"
+            exit 1
+          fi
+          echo "PASS: tlmgr found at $(command -v tlmgr)"
+      - name: Assert tlmgr shows scheme-infraonly installed
+        run: |
+          if ! tlmgr info --only-installed scheme-infraonly 2>/dev/null | grep -q "scheme-infraonly"; then
+            echo "FAIL: scheme-infraonly package not reported as installed by tlmgr"
+            exit 1
+          fi
+          echo "PASS: scheme-infraonly package is installed"
