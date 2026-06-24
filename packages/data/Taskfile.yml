@@ -1,0 +1,25 @@
+version: '3'
+method: none
+tasks:
+  ajv:
+    internal: true
+    requires:
+      vars: [schema, data]
+    cmd: >-
+      ajv
+      --spec=draft2020
+      --strict
+      --all-errors
+      -c ajv-formats
+      -r schemas/target.schema.json
+      -s {{ .schema }}
+      -d {{ .data }}
+  default:
+    sources: ['data/*.json']
+    cmd:
+      for: sources
+      task: ajv
+      vars:
+        data: '{{ .ITEM }}'
+        schema: >-
+          schemas/{{ .ITEM | osBase | trimSuffix ".json" }}.schema.json

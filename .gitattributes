@@ -1,0 +1,10 @@
+* text=auto
+
+.actrc linguist-language=opts
+package-lock.json -diff -merge
+tl_packages linguist-language=ignore
+
+/dist/** -diff -merge linguist-generated
+
+*.snap text eof=lf linguist-language=javascript linguist-generated
+*.patch -text -merge linguist-generated

@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "@tsconfig/node24/tsconfig.json",
+    "@tsconfig/strictest/tsconfig.json",
+  ],
+  "compilerOptions": {
+    "noUnusedParameters": false,
+    "resolveJsonModule": true,
+    "importHelpers": true,
+    "newLine": "lf",
+    "noEmitOnError": true,
+    "removeComments": true,
+    "stripInternal": true,
+    "allowSyntheticDefaultImports": false,
+    "esModuleInterop": false,
+    "verbatimModuleSyntax": true,
+    "experimentalDecorators": true,
+    "module": "node18",
+    "target": "esnext",
+  },
+}

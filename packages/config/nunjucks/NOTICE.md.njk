@@ -1,0 +1,35 @@
+# Third-Party Software Licenses and Copyright Notices
+
+This software incorporates the following third-party software components:
+
+{% for name, _ in modules %}
+- [`{{ name }}`](#{{ name |  slugify }})
+{% endfor %}
+
+------
+{% for name, versions in modules %}
+
+## `{{ name }}`
+
+URL: <https://www.npmjs.com/package/{{ name }}>
+{% for m in versions %}
+
+### v{{ m.version }}
+
+{% if m.author %}
+Copyright (c) {{ m.author | escape }}
+
+{% endif -%}
+
+License: `{{ m.license }}`
+
+```
+{% if m.licenseText -%}
+{{ m.licenseText.trimEnd() }}
+{% else -%}
+{% set license = spdx[m.license] %}
+{{ license.name }} ({{ license.url }})
+{% endif %}
+```
+{% endfor %}
+{% endfor %}
