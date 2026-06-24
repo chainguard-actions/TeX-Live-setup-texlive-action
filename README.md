@@ -10,6 +10,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 |---------|-----|-----------------|
 | v3.4.1 | [`v3.4.1`](https://github.com/chainguard-actions/TeX-Live-setup-texlive-action/tree/v3.4.1) | [`ff7075d`](https://github.com/TeX-Live/setup-texlive-action/commit/ff7075d18602f73f131689d381f345a8dc5a5000) |
 | v4.0.0 | [`v4.0.0`](https://github.com/chainguard-actions/TeX-Live-setup-texlive-action/tree/v4.0.0) | [`c4b5061`](https://github.com/TeX-Live/setup-texlive-action/commit/c4b50615f6b2aa81f2154a006997abca62c434e1) |
+| v4.1.1 | [`v4.1.1`](https://github.com/chainguard-actions/TeX-Live-setup-texlive-action/tree/v4.1.1) | [`eb78d21`](https://github.com/TeX-Live/setup-texlive-action/commit/eb78d21f41941476d9121e3a0abcab73265c876f) |
 
 ## Privacy
 
