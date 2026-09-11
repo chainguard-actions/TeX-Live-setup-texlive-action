@@ -11,14 +11,21 @@ jobs:
         with:
           cache: 'false'
           repository: 'https://mirror.ctan.org/systems/texlive/tlnet'
-          packages: 'scheme-infraonly'
+          packages: 'latex'
       - name: Assert version output is set
         env:
           VERSION: ${{ steps.action.outputs.version }}
         run: |
           echo "version: $VERSION"
           if [ -z "$VERSION" ]; then
-            echo "FAIL: expected version output to be non-empty"
+            echo "FAIL: expected version output to be set"
             exit 1
           fi
-          echo "PASS"
+          echo "PASS: version is '$VERSION'"
+      - name: Assert latex is available
+        run: |
+          if ! command -v latex > /dev/null 2>&1; then
+            echo "FAIL: latex command not found"
+            exit 1
+          fi
+          echo "PASS: latex is available"

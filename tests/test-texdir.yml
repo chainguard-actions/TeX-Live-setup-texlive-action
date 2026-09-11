@@ -11,21 +11,23 @@ jobs:
         with:
           cache: 'false'
           texdir: '${{ runner.temp }}/my-texlive-dir'
-          packages: 'scheme-infraonly'
+          packages: 'latex'
       - name: Assert version output is set
         env:
           VERSION: ${{ steps.action.outputs.version }}
         run: |
           echo "version: $VERSION"
           if [ -z "$VERSION" ]; then
-            echo "FAIL: expected version output to be non-empty"
+            echo "FAIL: expected version output to be set"
             exit 1
           fi
-          echo "PASS"
-      - name: Assert texdir was used
+          echo "PASS: version is '$VERSION'"
+      - name: Assert texdir exists
         run: |
-          if [ ! -d "$RUNNER_TEMP/my-texlive-dir" ]; then
-            echo "FAIL: expected texdir '$RUNNER_TEMP/my-texlive-dir' to exist"
+          TEXDIR="${RUNNER_TEMP}/my-texlive-dir"
+          echo "Checking texdir: $TEXDIR"
+          if [ ! -d "$TEXDIR" ]; then
+            echo "FAIL: expected texdir '$TEXDIR' to exist"
             exit 1
           fi
-          echo "PASS: texdir exists at $RUNNER_TEMP/my-texlive-dir"
+          echo "PASS: texdir exists"
